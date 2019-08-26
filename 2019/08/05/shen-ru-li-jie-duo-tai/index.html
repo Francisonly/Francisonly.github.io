@@ -1,0 +1,986 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="深入理解多态, Porthub">
+    <meta name="description" content="1、什么是多态1.1 概念 
+​    引用Charlie Calverts对多态的描述——多态性是允许你将父对象设置成为一个或更多的他的子对象相等的技术，赋值之后，父对象就可以根据当前赋值给它的子对象的特性以不同的方式运作。简单的说，就是">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>深入理解多态 | Porthub</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Porthub</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>索引</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友链</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Porthub</div>
+        <div class="logo-desc">
+            
+            不能信任那些Terminal或Editor用白底的人😂😂
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                索引
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友链
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        深入理解多态
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java/" target="_blank">
+                                <span class="chip bg-color">Java</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Java基础/" class="post-category" target="_blank">
+                                Java基础
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-08-05
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
+                        3.2k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
+                        11 Min
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="1、什么是多态"><a href="#1、什么是多态" class="headerlink" title="1、什么是多态"></a>1、什么是多态</h3><p>1.1 概念 </p>
+<p>​    引用Charlie Calverts对多态的描述——<strong>多态性是允许你将父对象设置成为一个或更多的他的子对象相等的技术，赋值之后，父对象就可以根据当前赋值给它的子对象的特性以不同的方式运作</strong>。简单的说，就是一句话：允许将子类类型的指针赋值给父类类型的指针。</p>
+<p>表现：父类引用指向子类对象。</p>
+<p>格式：Fu obj = new Zi ( );<br>  或者 接口名称 obj = new 实现类名称（）；</p>
+<p><img src="https://note.youdao.com/yws/public/resource/6005eef28414280a33f98a67b48ab0ff/xmlnote/WEBRESOURCE8eee6c6dc1543cc750ad43b956caf4a5/328" alt="多态概念"></p>
+<p>1.2 多态的两种形式</p>
+<p>​    编译时多态：<br>        <em> 编译期间决定目标方法<br>        </em> 通过重载实现<br>        * 方法名相同，参数不同</p>
+<p>​    运行时多态：<br>        <em> 运行期间决定目标方法<br>        </em> 同名同参<br>        <em> 通过重写和继承实现<br>        </em> JVM决定目标法方法</p>
+<p>1.3  三个前提    </p>
+<ul>
+<li>继承</li>
+<li>重写</li>
+<li>父类引用指向子类对象</li>
+</ul>
+<p>1.4 作用</p>
+<p>​    通用角度:<br>     把不同的子类对象当成父类来用（即向上转型），可以屏蔽不同子类对象的差异，写出通用的代码。做出通用的编程，以适应需求的不断变化。<br>特异性角度：<br>    赋值以后，父类型的引用就可以根据当前赋值的子对象之间的差异以不同的方式运作。也就是说父亲的行为像儿子，而不是儿子的行为像父亲。</p>
+<h3 id="2、多态中成员变量-方法的访问"><a href="#2、多态中成员变量-方法的访问" class="headerlink" title="2、多态中成员变量/方法的访问"></a>2、多态中成员变量/方法的访问</h3><p>​    先说结果，对于访问成员变量和成员方法，多态有自己的一套准则：<br>1、访问成员变量，编译看左，运行看左；<br>2、访问成员方法，编译看左，运行看右（<strong><em>只针对重写了的方法</em></strong>）； <br>3、访问静态方法，编译看左，运行看左。<br> 总的来说就记住这么一句，<strong>多态中只有非静态的成员方法才是编译看父类，而运行时看子类，也即是实际调用的是子类方法</strong>。</p>
+<p>​    例子：<strong>花木兰替父从军</strong><br>        1、花木兰替父亲花弧从军。那么这时候花木兰是子类，花弧是父类。<br>        2、花弧有自己的成员属性年龄，姓名，性别。花木兰也有这些属性，但是很明显二者的属性完全不一样。<br>        3、花弧有自己的非静态成员方法‘骑马杀敌’，同样花木兰也遗传了父亲一样的方法‘骑马杀敌’。<br>        4、花弧有自己的非静态成员方法‘骑马杀敌’，同样花木兰也遗传了父亲一样的方法‘骑马杀敌’。<br>    但是，现在花木兰替父从军，女扮男装。这时候相当于父类的引用（花弧这个名字）指向了子类对象（花木兰这个人），那么在其他类（其他的人）中访问子类对象（花木兰这个人）的成员属性（姓名，年龄，性别）时，其实看到的都是花木兰她父亲的名字（花弧）、年龄（60岁）、性别（男）。当访问子类对象（花木兰这个人）的非静态成员方法（骑马打仗）时，其实都是看到花木兰自己运用十八般武艺在骑马打仗。当访问花木兰的静态方法时（自我介绍），花木兰自己都是用她父亲的名字信息在向别人作自我介绍。并且这时候花木兰不能使用自己特有的成员方法‘涂脂抹粉’。—–<strong>多态中的向上转型</strong>。<br>    那么终于一将功成万骨枯，打仗旗开得胜了，花木兰告别了战争生活。有一天，遇到了自己心爱的男人，这时候爱情的力量将父类对象的引用（花弧这个名字）强制转换为子类对象本来的引用（花木兰这个名字），那么花木兰又从新成为了她自己，这时候她完全是她自己了。名字是花木兰，年龄是28，性别是女，打仗依然那样生猛女汉子，自我介绍则堂堂正正地告诉别人我叫花木兰。OMG！终于，终于可以使用自己特有的成员方法‘涂脂抹粉’了。从此，花木兰完全回到了替父从军前的那个花木兰了。并且和自己心爱的男人幸福的过完了一生。—–<strong>多态中的向下转型</strong>。<br><strong><em>注意：</em></strong>向上/下转型一定是在多态这个前提下，向上转型有一个弊端，对象一旦向上转型，就不能调用子类特有方法。解决方案-向下转型，格式：子类 obj = (子类) 父类对象。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">package</span> huamulan<span class="token punctuation">.</span>tfcj<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Huahu</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> age <span class="token operator">=</span> <span class="token number">60</span><span class="token punctuation">;</span>
+    String name <span class="token operator">=</span> <span class="token string">"花弧"</span><span class="token punctuation">;</span>
+    String sex <span class="token operator">=</span> <span class="token string">"男"</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">intro</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"我叫花弧"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">void</span>  <span class="token function">kill</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"花弧骑马杀人"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">package</span> huamulan<span class="token punctuation">.</span>tfcj<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Huamulan</span> <span class="token keyword">extends</span> <span class="token class-name">Huahu</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> age <span class="token operator">=</span> <span class="token number">20</span><span class="token punctuation">;</span>
+    String name <span class="token operator">=</span> <span class="token string">"花木兰"</span><span class="token punctuation">;</span>
+    String sex <span class="token operator">=</span> <span class="token string">"女"</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">makeUp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"花木兰涂脂抹粉"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">void</span>  <span class="token function">kill</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"花木兰骑马杀人"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">package</span> huamulan<span class="token punctuation">.</span>tfcj<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span> <span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        Huahu huamulan <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Huamulan</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//访问成员变量</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>huamulan<span class="token punctuation">.</span>name <span class="token operator">+</span> huamulan<span class="token punctuation">.</span>age <span class="token operator">+</span> huamulan<span class="token punctuation">.</span>sex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//访问骑马杀敌方法</span>
+        huamulan<span class="token punctuation">.</span><span class="token function">kill</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//访问父类特有方法</span>
+        huamulan<span class="token punctuation">.</span><span class="token function">intro</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//访问子类特有方法编译错误，这是因为对象一旦向上转型，就不能调用子类特有方法</span>
+       <span class="token comment" spellcheck="true">// huamulan.makeUp();</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Huamulan huamulan1 <span class="token operator">=</span> <span class="token punctuation">(</span>Huamulan<span class="token punctuation">)</span> huamulan<span class="token punctuation">;</span>
+        huamulan1<span class="token punctuation">.</span><span class="token function">makeUp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>​    </p>
+<pre class=" language-java"><code class="language-java">结果：
+花弧<span class="token number">60</span>男
+ 花木兰骑马杀人
+我叫花弧
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
+花木兰涂脂抹粉
+</code></pre>
+<h3 id="3、多态实现机制"><a href="#3、多态实现机制" class="headerlink" title="3、多态实现机制"></a>3、多态实现机制</h3><p>​    接下来，我们来看一下jvm是如何识别目标方法的。<br>    刚才我们说到，重载方法的区分在编译阶段已经完成了，那么我们就可以认为在java虚拟机中不存在重载这一概念。因此，重载也可以被称为<strong>静态绑定，</strong>而重写则被称为动态绑定。<br>在jvm中，我们有5种方法调用的指令，分别是：<br>invokestatic：调用静态方法；<br>invokespecial：调用实例构造方法，私有方法和父类方法，以及使用super关键字调用父类的实例方法或构造器；<br><strong><em>invokevirtual：调用虚方法(非私有实例方法)；</em></strong><br>invokeinterface：调用接口方法，在运行时再确定一个实现此接口的对象；<br>invokedynamic：在运行时动态解析出调用点限定符所引用的方法之后，调用该方法(jdk1.8lamada表达式)；<br>    这里，我们简单介绍一下这几种指令，对于invokestatic指令和invokespecial指令而言，java虚拟机能够直接识别目标方法，也就是我们所说的<strong>静态绑定</strong>。invokevirtual和invokeinterface指令则需要在执行的过程中才能找到目标方法，也就是我们所说的<strong>动态绑定</strong>。只要能被<code>invokestatic</code>和<code>invokespecial</code>指令调用的方法，都可以在类加载过程中的解析阶段中确定唯一的调用版本，<strong>符合这个条件的方法有静态方法、私有方法、实例构造器和父类方法四种，它们在类加载过程中的解析阶段就会将符号引用解析为该方法的直接引用。这些方法可以称为非虚方法（也就是不涉及到多态的方法）</strong>，与之对应的就是虚方法。虚方法需要在运行阶段才能确定目标方法的直接引用。</p>
+<p>总结一下静态/动态绑定和虚/非虚方法的概念：<br>    1、静态绑定：在程序执行之前就已经被绑定、也就是说再编译阶段就已经知道这个方法是属于哪个类的方法。                 1.private修饰的方法，不能被子类调用   2.  被final修饰的方法（可以调用，不能重写）      3.被static修饰的方法    2、动态绑定：在运行过程中根据调用者的动态类型来识别目标方法的情况。<br>    3、<strong>动态绑定中，我们会记录方法对应的实际引用的地址，也可以理解为索引值，这里我们把它叫做方法表。方法表使用了数组的数据结构，每个数组元素指向了当前类以及其祖先类中非私有的实例方法。这个数据结构，便是java虚拟机实现动态绑定的关键所在</strong>。<br></p>
+<p><img src="https://note.youdao.com/yws/public/resource/6005eef28414280a33f98a67b48ab0ff/xmlnote/9bc611b10c058fbda913cbdc7c01e0e7/332" alt></p>
+<p><img src="https://note.youdao.com/yws/public/resource/6005eef28414280a33f98a67b48ab0ff/xmlnote/WEBRESOURCEe157882bb03da1b95398fe4d38f6d838/334" alt></p>
+<p>​    4、虚/非虚方法：除了静态方法之外，声明为final或者private的实例方法是非虚方法。其它（其他非private方法）实例方法都是虚方法。 静态方法也是非虚方法，被重写的都是虚方法。</p>
+<h3 id="4、一个经典例子"><a href="#4、一个经典例子" class="headerlink" title="4、一个经典例子"></a>4、一个经典例子</h3><p>（一）相关类</p>
+<pre class=" language-java"><code class="language-java"> <span class="token keyword">class</span> <span class="token class-name">A</span> <span class="token punctuation">{</span>  
+         <span class="token keyword">public</span> String <span class="token function">show</span><span class="token punctuation">(</span>D obj<span class="token punctuation">)</span><span class="token punctuation">{</span>  
+                <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token string">"A and D"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+       <span class="token punctuation">}</span>   
+         <span class="token keyword">public</span> String <span class="token function">show</span><span class="token punctuation">(</span>A obj<span class="token punctuation">)</span><span class="token punctuation">{</span>  
+               <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token string">"A and A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token punctuation">}</span>   
+ <span class="token punctuation">}</span>   
+<span class="token keyword">class</span> <span class="token class-name">B</span> <span class="token keyword">extends</span> <span class="token class-name">A</span><span class="token punctuation">{</span>  
+         <span class="token keyword">public</span> String <span class="token function">show</span><span class="token punctuation">(</span>B obj<span class="token punctuation">)</span><span class="token punctuation">{</span>  
+               <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token string">"B and B"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         <span class="token punctuation">}</span>  
+        <span class="token keyword">public</span> String <span class="token function">show</span><span class="token punctuation">(</span>A obj<span class="token punctuation">)</span><span class="token punctuation">{</span>  
+               <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token string">"B and A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+         <span class="token punctuation">}</span>   
+ <span class="token punctuation">}</span>  
+<span class="token keyword">class</span> <span class="token class-name">C</span> <span class="token keyword">extends</span> <span class="token class-name">B</span><span class="token punctuation">{</span><span class="token punctuation">}</span>   
+<span class="token keyword">class</span> <span class="token class-name">D</span> <span class="token keyword">extends</span> <span class="token class-name">B</span><span class="token punctuation">{</span><span class="token punctuation">}</span>  
+</code></pre>
+<p>（二）问题：以下输出结果是什么？</p>
+<ol>
+<li>A a1 = <strong>new</strong> A();  </li>
+<li>​        A a2 = <strong>new</strong> B();  </li>
+<li>​        B b = <strong>new</strong> B();  </li>
+<li>​        C c = <strong>new</strong> C();   </li>
+<li>​        D d = <strong>new</strong> D();   </li>
+<li>​        System.out.println(a1.show(b));   ①  </li>
+<li>​        System.out.println(a1.show(c));   ②  </li>
+<li>​        System.out.println(a1.show(d));   ③  </li>
+<li>​        System.out.println(a2.show(b));   ④  </li>
+<li>​        System.out.println(a2.show(c));   ⑤  </li>
+<li>​        System.out.println(a2.show(d));   ⑥  </li>
+<li>​        System.out.println(b.show(b));    ⑦  </li>
+<li>​        System.out.println(b.show(c));    ⑧  </li>
+<li>​        System.out.println(b.show(d));    ⑨     </li>
+</ol>
+<p>（三）答案</p>
+<p>①   A and A</p>
+<p>②   A and A</p>
+<p>③   A and D</p>
+<p>④   B and A</p>
+<p>⑤   B and A</p>
+<p>⑥   A and D</p>
+<p>⑦   B and B</p>
+<p>⑧   B and B</p>
+<p>⑨   A and D</p>
+<p>（四）分析</p>
+<p>​    实际上这里涉及方法调用的优先问题 ，<strong><em>优先级由高到低依次为：this.show(O)、super.show(O)、this.show((super)O)、super.show((super)O)</em></strong>。<br>    比如④，a2.show(b)，a2是一个引用变量，类型为A，则this为a2，b是B的一个实例，于是它到类A里面找show(B obj)方法，没有找到，于是到A的super(超类)找，而A没有超类，因此转到第三优先级this.show((super)O)，this仍然是a2，这里O为B，(super)O即(super)B即A，因此它到类A里面找show(A obj)的方法，类A有这个方法，但是由于a2引用的是类B的一个对象，B覆盖了A的show(A obj)方法，因此最终锁定到类B的show(A obj)，输出为”B and A”。<br>    再比如⑧，b.show(c)，b是一个引用变量，类型为B，则this为b，c是C的一个实例，于是它到类B找show(C obj)方法，没有找到，转而到B的超类A里面找，A里面也没有，因此也转到第三优先级this.show((super)O)，this为b，O为C，(super)O即(super)C即B，因此它到B里面找show(B obj)方法，找到了，由于b引用的是类B的一个对象，因此直接锁定到类B的show(B obj)，输出为”B and B”。<br>    <strong><em>当超类对象引用变量引用子类对象时，被引用对象的类型而不是引用变量的类型决定了调用谁的成员方法，但是这个被调用的方法必须是在超类中定义过的，也就是说被子类覆盖的方法。还是拿a2.show(b)来说吧</em></strong>。<br>    a2是一个引用变量，类型为A，它引用的是B的一个对象，因此这句话的意思是由B来决定调用的是哪个方法。因此应该调用B的show(B obj)从而输出”B and B”才对。但是为什么跟前面的分析得到的结果不相符呢？！问题在于我们不要忽略了蓝色字体的后半部分，那里特别指明：这个被调用的方法必须是在超类中定义过的，也就是被子类覆盖的方法。B里面的show(B obj)在超类A中有定义吗？没有！那就更谈不上被覆盖了。实际上这句话隐藏了一条信息：它仍然是按照方法调用的优先级来确定的。它在类A中找到了show(A obj)，如果子类B没有覆盖show(A obj)方法，那么它就调用A的show(A obj)（由于B继承A，虽然没有覆盖这个方法，但从超类A那里继承了这个方法，从某种意义上说，还是由B确定调用的方法，只是方法是在A中实现而已）；现在子类B覆盖了show(A obj)，因此它最终锁定到B的show(A obj)。这就是那句话的意义所在，到这里，我们可以清晰的理解Java的多态性了。</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="https://blog.csdn.net/free4294/article/details/39054791" target="_blank" rel="noopener">Java多态性 的详细举例说明 </a></p>
+<p><a href="https://blog.csdn.net/sinat_33921105/article/details/82023924" target="_blank" rel="noopener">你知道多态的实现机制吗?是时候好好回顾一下了！</a></p>
+<p><a href="https://blog.csdn.net/qq_32519415/article/details/87284411" target="_blank" rel="noopener">多态：JVM是如何进行方法调用的</a></p>
+<p><a href="https://blog.csdn.net/q982151756/article/details/81588284" target="_blank" rel="noopener">细说JVM（虚拟机实现多态）</a></p>
+<p><a href="https://b23.tv/av31547919" target="_blank" rel="noopener">谈谈对Java多态的理解</a></p>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">谢谢你请我吃烤肠</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="MTAyMC80NDg4Ny8yMTQwOA==">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2019/08/26/string-hui-gu-ji-cong-jvm-fen-xi-string-chang-liang-chi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="String回顾及从JVM分析String常量池问题.md">
+                        
+                        <span class="card-title">String回顾及从JVM分析String常量池问题.md</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            1、字符串特点​    String 类代表字符串。Java 程序中的所有字符串字面值（如 &quot;abc&quot; ）都作为此类的实例实现。即程序中所有双引号的字符串都是String类的对象，即使没有new关键字。    1.字符串
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-26
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-user fa-fw"></i>
+                            Francis Zh
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/07/04/java-ji-he-xi-lie-03-set/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Java集合系列03-Set">
+                        
+                        <span class="card-title">Java集合系列03-Set</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            ​    Set接口的特点：1、不允许元素重复；2、无序的集合。  
+1、HashSet​    HashSet特点：1、不允许存储重复元素；                            2、没有索引，没有带索引的方法，不能使用普
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Java基础/" class="post-category" target="_blank">
+                                    Java基础
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java/" target="_blank">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                    <a href="/tags/集合/" target="_blank">
+                        <span class="chip bg-color">集合</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">10.1k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/francisonly" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:swjtufchzh@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1594333017" class="tooltipped" data-tooltip="QQ联系我: 1594333017" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
+
+About
