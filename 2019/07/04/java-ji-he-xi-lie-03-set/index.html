@@ -350,7 +350,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                        992
+                        999
                     </div>
                     
 
@@ -425,7 +425,7 @@ zeng zhou wu
 <tbody>
 <tr>
 <td>Case1</td>
-<td style="text-align:center">✔️</td>
+<td style="text-align:center">✖️</td>
 <td style="text-align:center">✖️</td>
 <td style="text-align:center">✖️</td>
 <td style="text-align:left">demo.hashset2.Person@2752f6e2<br>demo.hashset2.Person@e580929<br>demo.hashset2.Person@6b71769e</td>
@@ -525,17 +525,18 @@ zeng zhou wu
          *name:zhao age:18
          *name:zhao age:18
          **/</span>
-        <span class="token comment" spellcheck="true">/*重写hasCode()没有重写hasCode()方法的打印结果：
+        <span class="token comment" spellcheck="true">/*重写hasCode()没有重写equals()方法的打印结果：
          *name:zhao age:18
          *name:zhao age:18
          *name:qian age:20
          **/</span>
         <span class="token comment" spellcheck="true">/*重写equals()方法没有重写hasCode()方法
-         *name:qian age:20
+         * name:qian age:20
          *name:zhao age:18
          *name:zhao age:18
          **/</span>
-        <span class="token comment" spellcheck="true">/*name:zhao age:18
+        <span class="token comment" spellcheck="true">/*重写hasCode()和equals()方法
+         *name:zhao age:18
          *name:qian age:20
          **/</span>
         <span class="token keyword">for</span> <span class="token punctuation">(</span>Object o <span class="token operator">:</span> set<span class="token punctuation">)</span> <span class="token punctuation">{</span>
